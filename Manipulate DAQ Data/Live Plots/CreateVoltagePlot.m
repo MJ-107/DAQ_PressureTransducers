@@ -1,6 +1,11 @@
 % DAQ Pressure Transducer
 % Create and display live plot of voltage readings
 
+%   Inputs:
+%     data - live numerical data from DAQ
+%     channelNames - Input channels in use
+
+
 function CreateVoltagePlot(data, channelNames)
 
     time = data.Time; % Get time vector
