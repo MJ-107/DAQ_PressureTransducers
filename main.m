@@ -5,25 +5,24 @@ close all
 clear all
 clc
 
-%% Check DAQ cxn
+%% Check if DAQ(s) connected
+vendor = "ni";
 
-% Specify DAQ vendor
-vendor = "ni"; % National Instruments
-
-% Check cxn
 [isConnected, devices] = checkDAQCxn(vendor);
 
-% Handle results and display for user
-if isConnected % Cxn found
-    fprintf("DAQ detected! Found %d device(s):\n", numel(devices));
-    for i = 1:1:numel(devices)
-        fprintf("  Device %d: %s (%s)\n", i, devices(i).Model, ...
-            devices(i).ID);
+% Display results
+if isConnected
+    fprintf("DAQ detected! Found %d device(s):\n", height(devices));
+
+    for i = 1:1:height(devices)
+        fprintf("Device %d:\n", i);
+        fprintf("Vendor: %s\n", devices.VendorID(i));
+        fprintf("Model:  %s\n", devices.Model(i));
+        fprintf("ID:     %s\n", devices.DeviceID(i));
     end
 
-else % Cxn not found
+else
     fprintf("No DAQ devices detected for vendor '%s'.\n", vendor);
-    return
 end
 
 %% 

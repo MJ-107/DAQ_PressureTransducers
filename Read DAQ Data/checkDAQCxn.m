@@ -16,7 +16,9 @@ function [isConnected, devices] = checkDAQCxn(vendor)
         devices = daqlist;
         
         % Filter devices by vendor
-        devices = devices(strcmp({devices.Vendor.ID}, vendor));
+        if ~isempty(devices)
+            devices = devices(devices.VendorID == vendor, :);
+        end
 
         % Return true if device found
         isConnected = ~isempty(devices);
