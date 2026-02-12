@@ -1,8 +1,8 @@
 function [isConnected, devices] = checkDAQCxn(vendor)
 
 %   Inputs:
-%     vendor - String specifying DAQ vendor, e.g., 'ni'
-%              Default is 'ni' for National Instruments.
+%     vendor - String specifying DAQ vendor
+
 %   Outputs:
 %     isConnected - True if at least one device is detected
 %     devices - Array of detected DAQ devices

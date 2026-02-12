@@ -11,16 +11,10 @@ vendor = "ni";
 [isConnected, devices] = checkDAQCxn(vendor);
 
 % Display results
+
 if isConnected
-    fprintf("DAQ detected! Found %d device(s):\n", height(devices));
-
-    for i = 1:1:height(devices)
-        fprintf("Device %d:\n", i);
-        fprintf("Vendor: %s\n", devices.VendorID(i));
-        fprintf("Model:  %s\n", devices.Model(i));
-        fprintf("ID:     %s\n", devices.DeviceID(i));
-    end
-
+    disp("DAQ detected:")
+    disp(devices)
 else
     fprintf("No DAQ devices detected for vendor '%s'.\n", vendor);
 end
