@@ -1,5 +1,5 @@
+% Using NI DAQ USB 6008
 
-% Using DAQ USB 6008
 %% Initialize
 close all
 clear all
@@ -22,8 +22,10 @@ end
 %% Create DAQ Session
 
 % Call function to start DAQ session
+% Note that channel configuration appears in startDAQSession fcn
     session = startDAQSession(devices);
 
-%% Live plot voltage and pressure 
+%% Create live plots of voltage and pressure 
 
 CreateVoltagePlot(session);
+
