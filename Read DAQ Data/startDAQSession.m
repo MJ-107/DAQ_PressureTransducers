@@ -22,10 +22,10 @@ function session = startDAQSession(devices)
         ch1.TerminalConfig = "Differential";
         ch1.Range = [-5 5]; % Range specified by Validyne for P17
 
-        % Channel 2 - Differential
-        ch2 = addinput(session, deviceID, "ai1", "Voltage");
-        ch2.TerminalConfig = "Differential";
-        ch2.Range = [-5 5]; % Range specified by Validyne for P17
+        % % Channel 2 - Differential
+        % ch2 = addinput(session, deviceID, "ai1", "Voltage");
+        % ch2.TerminalConfig = "Differential";
+        % ch2.Range = [-5 5]; % Range specified by Validyne for P17
 
         session.Rate = 1000; % 1 kHz sampling
 

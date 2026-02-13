@@ -1,31 +1,60 @@
+function CreateVoltagePlot(session)
 % DAQ Pressure Transducer
 % Create and display live plot of voltage readings
 
 %   Inputs:
-%     data - live numerical data from DAQ
-%     channelNames - Input channels in use
+%   session - From DAQ session
 
+    arguments
+        session
+    end
 
-function CreateVoltagePlot(data, channelNames)
+    nChannels = numel(session.Channels);
 
-    time = data.Time; % Get time vector
-    numberOfChanels = numel(channelNames); % Get number of input chanels
+    if nChannels == 0
+        error("No input channels configured.");
+    end
 
-    % Initialize figure
-    figure
+    % Create figure
+    figure('Name','Live Analog Input Voltages');
     hold on
     grid on
 
-    % Cycle through input chanels and plot
-    for i = 1:1:numberOfChanels
-        plot(time, data.(channelNames{i}), "LineWidth", 1.2)
-    end
-
-    hold off
-
-    % Add axis labels
     xlabel("Time (s)")
     ylabel("Voltage (V)")
     title("Live Analog Input Voltages")
-    legend(channelNames, "Interpreter", "none", "Location", "best")
+
+    colors = lines(nChannels);
+    h = gobjects(nChannels,1);
+    legendNames = strings(nChannels,1);
+
+    for i = 1:1:nChannels
+        h(i) = animatedline('Color', colors(i,:), 'LineWidth', 1.2);
+        legendNames(i) = session.Channels(i).ID;
+    end
+
+    legend(legendNames, "Interpreter", "none", "Location", "best")
+
+    startTime = tic;
+
+    disp("Streaming... Press Ctrl+C to stop")
+
+    % Continuous update loop
+    while isvalid(session)
+
+        data = read(session, seconds(0.1));
+
+        if isempty(data)
+            continue
+        end
+
+        t = seconds(data.Time - data.Time(1)) + toc(startTime);
+
+        for i = 1:nChannels
+            addpoints(h(i), t, data{:,i});
+        end
+
+        drawnow limitrate
+
+    end
 end
