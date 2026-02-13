@@ -18,14 +18,16 @@ function session = startDAQSession(devices)
         session = daq("ni");
 
         % Channel 1 - Differential
+        % For up/down direction
         ch1 = addinput(session, deviceID, "ai0", "Voltage");
         ch1.TerminalConfig = "Differential";
         ch1.Range = [-5 5]; % Range specified by Validyne for P17
 
         % % Channel 2 - Differential
-        % ch2 = addinput(session, deviceID, "ai1", "Voltage");
-        % ch2.TerminalConfig = "Differential";
-        % ch2.Range = [-5 5]; % Range specified by Validyne for P17
+        % % For left/right direction
+        % % ch2 = addinput(session, deviceID, "ai1", "Voltage");
+        % % ch2.TerminalConfig = "Differential";
+        % % ch2.Range = [-5 5]; % Range specified by Validyne for P17
 
         session.Rate = 1000; % 1 kHz sampling
 
