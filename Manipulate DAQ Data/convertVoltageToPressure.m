@@ -1,4 +1,4 @@
-function P = convertVoltageToPressure(V)
+function P = convertVoltageToPressure(V, m, b)
 
 % Linear scaling conversion
 % Assume identical scaling for P17
@@ -7,10 +7,13 @@ function P = convertVoltageToPressure(V)
 %   m - Slope (pressure per volt)
 %   b - Offset (pressure at 0 V, y-intercept)
 
-% For P17 calibration curve: 
-m = 9.09;
-b = -0.0002;
+    arguments
+        V double
+        m double
+        b double
+    end
 
+% For P17 linear calibration curve: 
     P = m .* V + b;
 
 end
