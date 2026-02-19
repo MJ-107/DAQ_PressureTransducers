@@ -29,6 +29,14 @@ end
 % Note that channel configuration appears in startDAQSession fcn
 session = startDAQSession(devices);
 
+%% Configure sensors to channels 
+
+% Configure any new transdcuers to the Trnaducer Configs folder
+% Allocate transducers to DAQ channels
+
+session = P17(session, devices.DeviceID, {"ai0"}); % Up/down direction
+session = P17(session, devices.DeviceID, {"ai1"}); % Left/right direction
+
 %% Create live plots of voltage and pressure 
 
 CreateVoltagePlot(session);
