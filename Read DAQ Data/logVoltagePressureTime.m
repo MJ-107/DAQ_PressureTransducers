@@ -40,13 +40,8 @@ function [P_log, V_log, t_log] = logVoltagePressureTime(session, m, b, filename)
         t = seconds(data.Time - data.Time(1)) + toc(startTime);
 
         % Voltages and pressures
-        V = zeros(size(data,1), nChannels);
-        P = zeros(size(data,1), nChannels);
-
-        for i = 1:nChannels
-            V(:,i) = data{:,i};
-            P(:,i) = applyCalibration(V(:,i), m(i), b(i));
-        end
+        V = data{:,1:nChannels};
+        P = convertVoltageToPressure(V, m, b);
 
         % Append to logs
         V_log = [V_log; V];

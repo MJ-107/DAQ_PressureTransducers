@@ -1,3 +1,5 @@
+%% General notes on expirimental set-up
+
 % Using NI DAQ USB 6008
 
 % Using x2 P17 configured to differential channels 1 and 2
@@ -31,22 +33,22 @@ session = startDAQSession(devices);
 
 %% Configure sensors to channels 
 
-% Configure any new transdcuers to the Trnaducer Configs folder
+% Configure any new transdcuers to the Transducer Configs folder
 % Allocate transducers to DAQ channels
 
 session = P17(session, devices.DeviceID, {"ai0"}); % Up/down direction
 session = P17(session, devices.DeviceID, {"ai1"}); % Left/right direction
 
-%% Create live plots of voltage and pressure 
-
-CreateVoltagePlot(session);
+%% Log voltage, pressure, and time
 
 % Input calibration constants for every sensor in order of configured
 % channel
 m = [9.0902 9.0924]; % slope of calibration curve
 b = [-0.0002 -0.0002]; % y-intercept of calibration curve
 
-convertVoltageToPressure(session,m,b);
-
 [P_log, V_log, t_log] = logVoltagePressureTime...
     (session, m, b, "PressureDAQ_Log.csv"); 
+
+%% Create live plots of voltage and pressure 
+
+CreateVoltagePlot(session);
