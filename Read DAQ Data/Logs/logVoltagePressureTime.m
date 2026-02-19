@@ -1,4 +1,4 @@
-function [P_log, V_log, t_log] = logVoltagePressureTime(session, m, b, filename)
+function logVoltagePressureTime(session, m, b, filename)
 
     arguments
         session
@@ -13,24 +13,14 @@ function [P_log, V_log, t_log] = logVoltagePressureTime(session, m, b, filename)
         error("Calibration vectors m and b must match number of channels.");
     end
 
-    % Initialize logs
-    P_log = [];
-    V_log = [];
-    t_log = [];
+    % Initialize CSV file with headers
+    initializeCSV(session, filename);
 
-    % Prepare CSV file with headers
-    channelNames = {session.Channels.ID};
-    headers = ["Time_s", strcat(channelNames, "_Voltage"), ...
-        strcat(channelNames, "_Pressure")];
-    writematrix(headers, filename);
-
-    % Start streaming
     startTime = tic;
     disp('Streaming and logging to CSV... Press Ctrl+C to stop')
 
     while isvalid(session)
 
-        % Read a short block of data
         data = read(session, seconds(0.1));
         if isempty(data)
             continue
@@ -39,17 +29,14 @@ function [P_log, V_log, t_log] = logVoltagePressureTime(session, m, b, filename)
         % Time vector
         t = seconds(data.Time - data.Time(1)) + toc(startTime);
 
-        % Voltages and pressures
+        % Voltage
         V = data{:,1:nChannels};
+
+        % Pressure using calibration function
         P = convertVoltageToPressure(V, m, b);
 
-        % Append to logs
-        V_log = [V_log; V];
-        P_log = [P_log; P];
-        t_log = [t_log; t];
+        % Append to CSV initialized in main
+        appendToCSV(filename, t, V, P);
 
-        % Write to CSV in append mode
-        out = [t, V, P];
-        writematrix(out, filename, 'WriteMode','append');
     end
 end
