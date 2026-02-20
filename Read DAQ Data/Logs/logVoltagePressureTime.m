@@ -10,13 +10,10 @@ function logVoltagePressureTime(session, m, b, filename)
     nChannels = numel(session.Channels);
 
     if length(m) ~= nChannels || length(b) ~= nChannels
-        error("Calibration vectors m and b must match number of channels.");
+        error("Calibration constants m and b must match number of channels.");
     end
 
-    % Initialize CSV file with headers
-    initializeCSV(session, filename);
-
-    startTime = tic;
+    startTime = tic; % Start time
     disp('Streaming and logging to CSV... Press Ctrl+C to stop')
 
     while isvalid(session)
@@ -26,8 +23,10 @@ function logVoltagePressureTime(session, m, b, filename)
             continue
         end
 
-        % Time vector
-        t = seconds(data.Time - data.Time(1)) + toc(startTime);
+        % Time
+        t = seconds(data.Time) + toc(startTime);
+        % Add elapsed time since last tic
+        %t = seconds(data.Time - data.Time(1)) + toc(startTime);
 
         % Voltage
         V = data{:,1:nChannels};
@@ -36,7 +35,7 @@ function logVoltagePressureTime(session, m, b, filename)
         P = convertVoltageToPressure(V, m, b);
 
         % Append to CSV initialized in main
-        appendToCSV(filename, t, V, P);
+        appendtoCSVLogs(filename, t, V, P);
 
     end
 end
