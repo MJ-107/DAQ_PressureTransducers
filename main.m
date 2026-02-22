@@ -46,8 +46,11 @@ session = P17(session, devices.DeviceID, {"ai1"}); % Left/right direction
 m = [9.0902 9.0924]; % slope of calibration curve
 b = [-0.0002 -0.0002]; % y-intercept of calibration curve
 
+% Desired block interval (seconds)
+readInterval = 1/1000;  % 0.1 seconds
+
 initializeCSVLogs(session,"PressureDAQ_Log.csv")
-logVoltagePressureTime(session, m, b, "PressureDAQ_Log.csv"); 
+logVoltagePressureTime(session, m, b, readInterval, "PressureDAQ_Log.csv"); 
 
 %% Create live plots of voltage and pressure 
 
