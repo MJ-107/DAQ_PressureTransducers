@@ -39,9 +39,9 @@ function logVoltagePressureTime(session, m, b, readInterval, runDuration, filena
         end
     
         % Time
-        t = seconds(data.Time) + toc(startTime);
+        %t = seconds(data.Time) + toc(startTime);
         % Add elapsed time since last tic
-        %t = seconds(data.Time - data.Time(1)) + toc(startTime);
+        t = seconds(data.Time - data.Time(1)) + toc(startTime);
 
         % Voltage
         V = data{:,1:nChannels};
@@ -52,8 +52,6 @@ function logVoltagePressureTime(session, m, b, readInterval, runDuration, filena
         %write to file 
         fprintf(fid,"%s , %f, %f, %f, %f \n",t(end),V(end,1), V(end,2),P(end,1),P(end,2));
 
-        % Append to CSV initialized in main
-        appendtoCSVLogs(filename, t, V, P);
 
     end
     
