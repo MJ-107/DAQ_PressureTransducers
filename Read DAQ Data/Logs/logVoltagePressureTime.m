@@ -1,4 +1,4 @@
-function logVoltagePressureTime(session, m, b, readInterval, filename)
+function logVoltagePressureTime(session, m, b, readInterval, runDuration, filename)
 
     arguments
         % Arguments w/o default
@@ -6,6 +6,8 @@ function logVoltagePressureTime(session, m, b, readInterval, filename)
         m double
         b double
         readInterval double
+        runDuration double
+
         % Arguments w/ default
         filename string = "DAQ_Log.csv"
     end
@@ -16,9 +18,10 @@ function logVoltagePressureTime(session, m, b, readInterval, filename)
         error("Calibration constants m and b must match number of channels.");
     end
 
-    startTime = tic; % Start time
-    disp('Streaming and logging to CSV... Press Ctrl+C to stop')
+    startTime = tic; % Start timer
+    disp(['Streaming and logging for ' num2str(runDuration) ' seconds...'])
     fid = fopen(filename,"a+");
+    
     % while isvalid(session)
     % 
     %     data = read(session, seconds(readInterval));
@@ -26,10 +29,15 @@ function logVoltagePressureTime(session, m, b, readInterval, filename)
     %         continue
     %     end
 
-    start(session, "continuous");
-    while session.Running
-        
+    start(session,"continuous"); % Start acquisition
 
+        while toc(startTime) < runDuration
+        data = read(session, seconds(readInterval));
+
+        if isempty(data)
+            continue
+        end
+    
         % Time
         t = seconds(data.Time) + toc(startTime);
         % Add elapsed time since last tic
@@ -41,11 +49,16 @@ function logVoltagePressureTime(session, m, b, readInterval, filename)
         % Pressure using calibration function
         P = convertVoltageToPressure(V, m, b);
 
-        fprintf(fid,"%s , %f, %f, %f, %f \n",t,V(1), V(2),P(1),P(2));
+        %write to file 
+        fprintf(fid,"%s , %f, %f, %f, %f \n",t(end),V(end,1), V(end,2),P(end,1),P(end,2));
+
         % Append to CSV initialized in main
-        % appendtoCSVLogs(filename, t, V, P);
+        appendtoCSVLogs(filename, t, V, P);
 
     end
-
+    
+    stop(session);
     fclose(fid);
+    disp("Finished logging.");
+    
 end
