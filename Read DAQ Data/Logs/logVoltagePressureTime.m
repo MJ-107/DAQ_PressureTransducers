@@ -1,4 +1,4 @@
-function logVoltagePressureTime(session, m, b, readInterval, runDuration, filename)
+function logVoltagePressureTime(session, m, b, readInterval, runDuration, devices, filename)
 
     arguments
         % Arguments w/o default
@@ -7,6 +7,7 @@ function logVoltagePressureTime(session, m, b, readInterval, runDuration, filena
         b double
         readInterval double
         runDuration double
+        devices
 
         % Arguments w/ default
         filename string = "DAQ_Log.csv"
@@ -34,12 +35,11 @@ function logVoltagePressureTime(session, m, b, readInterval, runDuration, filena
         while toc(startTime) < runDuration
         data = read(session, seconds(readInterval));
 
-        if isempty(data)
+            if isempty(data)
             continue
-        end
+            end
     
         % Time
-        %t = seconds(data.Time) + toc(startTime);
         % Add elapsed time since last tic
         t = seconds(data.Time - data.Time(1)) + toc(startTime);
 
@@ -50,10 +50,20 @@ function logVoltagePressureTime(session, m, b, readInterval, runDuration, filena
         P = convertVoltageToPressure(V, m, b);
 
         %write to file 
-        fprintf(fid,"%s , %f, %f, %f, %f \n",t(end),V(end,1), V(end,2),P(end,1),P(end,2));
+   
+        switch length(devices.DeviceID)
+            case 1
+                fprintf(fid,"%s , %f, %f \n",t(end),V(end,1),P(end,1));
+            case 2 
+                fprintf(fid,"%s , %f, %f, %f, %f \n",t(end),V(end,1), V(end,2),P(end,1),P(end,2));
+            case 3
+            
+            otherwise
+                disp("Number of channel configs exceeded for plotting. Add another case to switch case in logVoltagePressureTime.m")
+                
+        end
 
-
-    end
+        end
     
     stop(session);
     fclose(fid);

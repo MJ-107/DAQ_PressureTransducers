@@ -37,7 +37,7 @@ session = startDAQSession(devices);
 % Allocate transducers to DAQ channels
 
 session = P17(session, devices.DeviceID, {"ai0"}); % Up/down direction
-session = P17(session, devices.DeviceID, {"ai1"}); % Left/right direction
+%session = P17(session, devices.DeviceID, {"ai1"}); % Left/right direction
 
 %% Create live plot for voltage 
 %CreateVoltagePlot(session);
@@ -46,12 +46,12 @@ session = P17(session, devices.DeviceID, {"ai1"}); % Left/right direction
 
 % Input calibration constants for every sensor in order of configured
 % channel
-m = [9.0902 9.0924]; % slope of calibration curve
-b = [-0.0002 -0.0002]; % y-intercept of calibration curve
+m = [9.0902]; % slope of calibration curve %9.0924
+b = [-0.0002]; % y-intercept of calibration curve %-0.0002
 
 % Desired block interval (seconds)
 readInterval = 1/1000;  % 0.1 seconds
 runDuration  = 10; % 10 seconds
 
 initializeCSVLogs(session,"PressureDAQ_Log.csv")
-logVoltagePressureTime(session, m, b, readInterval, runDuration, "PressureDAQ_Log.csv"); 
+logVoltagePressureTime(session, m, b, readInterval, runDuration, devices, "PressureDAQ_Log.csv"); 

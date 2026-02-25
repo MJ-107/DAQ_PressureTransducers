@@ -8,4 +8,5 @@ function initializeCSVLogs(session, filename)
 
     writecell(cellstr(headers), filename);
 
+    disp("CSV file out initialized.");
 end
