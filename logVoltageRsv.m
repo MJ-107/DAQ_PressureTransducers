@@ -1,0 +1,59 @@
+function logVoltageRsv(session,readInterval, runDuration, devices, filename)
+
+
+    arguments
+        % Arguments w/o default
+        session
+        readInterval double
+        runDuration double
+        devices
+
+        % Arguments w/ default
+        filename string = "DAQ_Log.csv"
+    end
+
+    nChannels = numel(session.Channels);
+
+    startTime = tic; % Start timer
+    disp(['Streaming and logging for ' num2str(runDuration) ' seconds...'])
+    fid = fopen(filename,"a+");
+
+    start(session,"continuous"); % Start acquisition
+
+        while toc(startTime) < runDuration
+        data = read(session, seconds(readInterval));
+
+            if isempty(data)
+            continue
+            end
+    
+        % Time
+        % Add elapsed time since last tic
+        t = seconds(data.Time - data.Time(1)) + toc(startTime);
+
+        % Voltage
+        V = data{:,1:nChannels};
+
+        %write to file 
+   
+        switch length(devices.DeviceID)
+            case 1
+                fprintf(fid,"%s, %f \n",t(end),V(end,1));
+            % case 2 
+            %     fprintf(fid,"%s , %f, %f, %f, %f \n",t(end),V(end,1), V(end,2));
+            % case 3
+            
+            otherwise
+                disp("Number of channel configs exceeded for plotting. Add another case to switch case in logVoltagePressureTime.m")
+                
+        end
+
+        end
+    
+    stop(session);
+    fclose(fid);
+    disp("Finished logging.");
+    
+end
+
+

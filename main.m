@@ -36,7 +36,8 @@ session = startDAQSession(devices);
 % Configure any new transdcuers to the Transducer Configs folder
 % Allocate transducers to DAQ channels
 
-session = P17(session, devices.DeviceID, {"ai0"}); % Up/down direction
+session = Omegadyne(session,devices.DeviceID,{"ai0"});
+%session = P17(session, devices.DeviceID, {"ai0"}); % Up/down direction
 %session = P17(session, devices.DeviceID, {"ai1"}); % Left/right direction
 
 %% Create live plot for voltage 
@@ -44,14 +45,21 @@ session = P17(session, devices.DeviceID, {"ai0"}); % Up/down direction
 
 %% Log voltage, pressure, and time
 
-% Input calibration constants for every sensor in order of configured
-% channel
-m = [9.0902]; % slope of calibration curve %9.0924
-b = [-0.0002]; % y-intercept of calibration curve %-0.0002
+% % Input calibration constants for every sensor in order of configured
+% % channel
+%m = [9.0902]; % slope of calibration curve %9.0924
+%b = [-0.0002]; % y-intercept of calibration curve %-0.0002
 
 % Desired block interval (seconds)
 readInterval = 1/1000;  % 0.1 seconds
 runDuration  = 10; % 10 seconds
 
-initializeCSVLogs(session,"PressureDAQ_Log.csv")
-logVoltagePressureTime(session, m, b, readInterval, runDuration, devices, "PressureDAQ_Log.csv"); 
+%initializeCSVLogs(session,"PressureDAQ_Log.csv")
+initialzeCSVLogsRSV(session, "PressureDAQ_Log.csv")
+
+%logVoltagePressureTime(session, m, b, readInterval, runDuration, devices, "PressureDAQ_Log.csv"); 
+
+logVoltageRsv(session, readInterval, runDuration, devices, "PressureDAQ_Log.csv")
+
+
+

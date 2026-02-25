@@ -11,8 +11,8 @@ function session = Omegadyne(session, deviceID, channelList)
 
     for i = 1:length(channelList)
         ch = addinput(session, deviceID, channelList{i}, "Voltage");
-        ch.TerminalConfig = "Single Ended";
-        ch.Range = [0 5];  % Omegadyne spec
+        ch.TerminalConfig = "SingleEnded";
+        ch.Range = [-5 5];  % Omegadyne spec
     end
 
     fprintf("Added %d Omegadyne channel(s)\n", length(channelList));
