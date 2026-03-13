@@ -8,9 +8,10 @@ function logVoltagePressureTime(session, m, b, readInterval, runDuration, device
         readInterval double
         runDuration double
         devices
+        filename string
 
         % Arguments w/ default
-        filename string = "DAQ_Log.csv"
+        % filename string = "DAQ_Log.csv"
     end
 
     nChannels = numel(session.Channels);
@@ -52,7 +53,7 @@ function logVoltagePressureTime(session, m, b, readInterval, runDuration, device
         %write to file 
    
         switch length(devices.DeviceID)
-            case 1
+            case 1 
                 fprintf(fid,"%s , %f, %f \n",t(end),V(end,1),P(end,1));
             case 2 
                 fprintf(fid,"%s , %f, %f, %f, %f \n",t(end),V(end,1), V(end,2),P(end,1),P(end,2));

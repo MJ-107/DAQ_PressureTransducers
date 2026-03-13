@@ -20,7 +20,7 @@ function [isConnected, devices] = checkDAQCxn(vendor)
             devices = devices(devices.VendorID == vendor, :);
         end
 
-        % Return true if device found
+        % Return True if device found
         isConnected = ~isempty(devices);
 
     catch ME
