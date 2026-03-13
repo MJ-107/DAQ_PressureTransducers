@@ -30,7 +30,8 @@ end
 % Call function to start DAQ session
 % Note that channel configuration appears in startDAQSession fcn
 
-samplingRate = 1000; % Input desired DAQ sampling rate in Hz
+% in samples/s (Hz)
+samplingRate = 1000; % Input desired sampling rate for DAQ 
 session = startDAQSession(devices, samplingRate);
 
 %% Configure sensors to channels 

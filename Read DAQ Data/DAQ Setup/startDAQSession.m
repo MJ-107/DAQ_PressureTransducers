@@ -18,8 +18,7 @@ function session = startDAQSession(devices, samplingRate)
     try
         % Create DAQ object
         session = daq("ni");
-
-        session.Rate = samplingRate; %in kHz
+        session.Rate = samplingRate; % in samples/s (Hz)
 
         fprintf("Pressure DAQ session started on %s\n", deviceID);
 
