@@ -1,4 +1,4 @@
-function logVoltagePressureTime(session, m, b, readInterval, runDuration, devices, filename)
+function logVoltagePressureTime(session, m, b, readInterval, runDuration, devices, baseFilename)
 
     arguments
         % Arguments w/o default
@@ -8,10 +8,7 @@ function logVoltagePressureTime(session, m, b, readInterval, runDuration, device
         readInterval double
         runDuration double
         devices
-        filename string
-
-        % Arguments w/ default
-        % filename string = "DAQ_Log.csv"
+        baseFilename string
     end
 
     nChannels = numel(session.Channels);
@@ -22,22 +19,18 @@ function logVoltagePressureTime(session, m, b, readInterval, runDuration, device
 
     startTime = tic; % Start timer
     disp(['Streaming and logging for ' num2str(runDuration) ' seconds...'])
-    fid = fopen(filename,"a+");
     
-    % while isvalid(session)
-    % 
-    %     data = read(session, seconds(readInterval));
-    %     if isempty(data)
-    %         continue
-    %     end
-
+        for i=1:1:nChannels
+            fid(i) = fopen((baseFilename + "_Ch" + i + ".csv"),"a+");
+        end
+  
     start(session,"continuous"); % Start acquisition
 
         while toc(startTime) < runDuration
         data = read(session, seconds(readInterval));
 
             if isempty(data)
-            continue
+                continue
             end
     
         % Time
@@ -50,24 +43,19 @@ function logVoltagePressureTime(session, m, b, readInterval, runDuration, device
         % Pressure using calibration function
         P = convertVoltageToPressure(V, m, b);
 
-        %write to file 
-   
-        switch length(devices.DeviceID)
-            case 1 
-                fprintf(fid,"%s , %f, %f \n",t(end),V(end,1),P(end,1));
-            case 2 
-                fprintf(fid,"%s , %f, %f, %f, %f \n",t(end),V(end,1), V(end,2),P(end,1),P(end,2));
-            case 3
-            
-            otherwise
-                disp("Number of channel configs exceeded for plotting. Add another case to switch case in logVoltagePressureTime.m")
-                
-        end
+        % write to file 
+            for i = 1:nChannels
+                fprintf(fid(i), "%f, %f, %f\n", t(end), V(end,i), P(end,i));
+            end
 
         end
     
     stop(session);
-    fclose(fid);
+
+        for i = 1:1:nChannels
+            fclose(fid(i));
+        end
+
     disp("Finished logging.");
     
 end

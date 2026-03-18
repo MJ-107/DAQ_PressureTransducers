@@ -57,10 +57,13 @@ b = [-0.0002]; % y-intercept of calibration curve %-0.0002
 readInterval = 1/1000;  % 0.1 seconds
 runDuration  = 10; % 10 seconds
 
-initializeCSVLogs(session,"PressureDAQ_Log.csv")
+baseFilename = "PressureLog";
+
+initializeCSVLogs(session, baseFilename)
 %initialzeCSVLogsRSV(session, "PressureDAQ_Log.csv")
 
-logVoltagePressureTime(session, m, b, readInterval, runDuration, devices, "PressureDAQ_Log.csv"); 
+logVoltagePressureTime(session, m, b, readInterval, runDuration, ...
+    devices, baseFilename); 
 
 %logVoltageRsv(session, readInterval, runDuration, devices, "PressureDAQ_Log.csv")
 
