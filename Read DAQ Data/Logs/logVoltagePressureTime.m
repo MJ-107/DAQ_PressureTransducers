@@ -9,6 +9,8 @@ function logVoltagePressureTime(session, m, b, readInterval, runDuration, device
         runDuration double
         devices
         baseFilename string
+        %angleMeasurement string
+
     end
 
     nChannels = numel(session.Channels);

@@ -59,6 +59,8 @@ runDuration  = 10; % 10 seconds
 
 baseFilename = "PressureLog";
 
+%angleMeasurement ="P0_Y0";
+
 initializeCSVLogs(session, baseFilename)
 %initialzeCSVLogsRSV(session, "PressureDAQ_Log.csv")
 

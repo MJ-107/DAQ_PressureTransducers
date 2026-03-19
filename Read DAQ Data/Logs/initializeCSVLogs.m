@@ -1,12 +1,14 @@
-function initializeCSVLogs(session, filename)
+function initializeCSVLogs(session, baseFilename)
 
-    channelNames = {session.Channels.ID};
+    nChannels = numel(session.Channels);
 
-    headers = ["Time_s", ...
-               strcat(channelNames, "_Voltage"), ...
-               strcat(channelNames, "_Pressure")];
+    for i = 1:nChannels
+        filename = baseFilename + "_Ch" + i + ".csv";
 
-    writecell(cellstr(headers), filename);
+        headers = {"Time_s", "Voltage", "Pressure"};
 
-    disp("CSV file out initialized.");
+        writecell(headers, filename);
+    end
+
+    disp("CSV files initialized correctly.");
 end
