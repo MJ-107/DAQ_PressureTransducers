@@ -69,5 +69,6 @@ logVoltagePressureTime(session, m, b, readInterval, runDuration, ...
 
 %logVoltageRsv(session, readInterval, runDuration, devices, "PressureDAQ_Log.csv")
 
+pressuretAB = table2array(readtable('PressureLog_Ch1.csv'));
 
-
+plot(pressuretAB(:,1),pressuretAB(:,3));
