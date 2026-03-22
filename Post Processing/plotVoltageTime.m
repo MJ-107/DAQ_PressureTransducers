@@ -6,8 +6,8 @@ voltage = dataTable(:,2);
 
 figure;
 plot(time, voltage, '-b', 'LineWidth', 1.5);
-xlabel('Time');
-ylabel('Voltage');
+xlabel('Time (s)');
+ylabel('Voltage (V)');
 title('Voltage vs Time');
 grid on;
 

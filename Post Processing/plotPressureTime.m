@@ -6,8 +6,8 @@ pressure = dataTable(:,3);
 
 figure;
 plot(time, pressure, '-b', 'LineWidth', 1.5);
-xlabel('Time');
-ylabel('Pressure');
+xlabel('Time (s)');
+ylabel('Pressure (Pa)');
 title('Pressure vs Time');
 grid on;
 
