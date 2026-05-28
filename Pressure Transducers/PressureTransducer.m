@@ -43,7 +43,7 @@ session = startDAQSession(devices, samplingRate);
 
 session = P17(session, devices.DeviceID, {"ai0"}); % Up/down direction
 %session = P17(session, devices.DeviceID, {"ai1"}); % Left/right direction
-%session = Omegadyne(session,devices.DeviceID,{"ai2"});
+%session = Omegadyne(session,devices.DeviceID,{"ai0"});
 
 %% Create live plot for voltage 
 %CreateVoltagePlot(session);
@@ -52,25 +52,26 @@ session = P17(session, devices.DeviceID, {"ai0"}); % Up/down direction
 
 % Input calibration constants for every sensor in order of configured
 % channel
-m = [9.0902]; % slope of calibration curve %9.0924
-b = [-0.0002]; % y-intercept of calibration curve %-0.0002
-
+m = [0.11*1000]; % slope of calibration curve %9.0902 (SN10)
+b = [0]; % y-intercept of calibration curve %-0.0002
+% 
 % Desired block interval (seconds)
 readInterval = 1/1000;  % 0.1 seconds
-runDuration  = 10; % 10 seconds
-
+runDuration  = 60; % in seconds
+% 
 baseFilename = "PressureLog";
-
-%angleMeasurement ="P0_Y0";
-
+% 
+% %angleMeasurement ="P0_Y0";
+% 
 initializeCSVLogs(session, baseFilename)
 %initialzeCSVLogsRSV(session, "PressureDAQ_Log.csv")
-
+% 
 logVoltagePressureTime(session, m, b, readInterval, runDuration, ...
-    devices, baseFilename); 
+     devices, baseFilename); 
 
 %logVoltageRsv(session, readInterval, runDuration, devices, "PressureDAQ_Log.csv")
 
 filename = 'PressureLog_Ch1.csv';
+%filename = 'PressureDAQ_Log.csv';
 plotPressureTime(filename);
 plotVoltageTime(filename);
