@@ -33,7 +33,8 @@ session = startDAQSession(devices, samplingRate);
 
 session = P17(session, devices.DeviceID, {"ai0"}); % Up/down direction
 %session = P17(session, devices.DeviceID, {"ai1"}); % Left/right direction
-%session = Omegadyne(session,devices.DeviceID,{"ai0"});
+%session = P17(session, devices.DeviceID, {"ai2"}); % Center hole vs atm
+session = ()
 
-%% Create live plot for voltage 
-%CreateVoltagePlot(session);
+run("Pressure Transducer")
+run()
