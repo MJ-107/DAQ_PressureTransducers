@@ -32,9 +32,9 @@ session = startDAQSession(devices, samplingRate);
 % Allocate transducers to DAQ channels
 
 session = P17(session, devices.DeviceID, {"ai0"}); % Up/down direction
-%session = P17(session, devices.DeviceID, {"ai1"}); % Left/right direction
+session = P17(session, devices.DeviceID, {"ai1"}); % Left/right direction
 %session = P17(session, devices.DeviceID, {"ai2"}); % Center hole vs atm
-session = ()
+%session = ()
 
-run("Pressure Transducer")
-run()
+run("PressureTransducer")
+%run()

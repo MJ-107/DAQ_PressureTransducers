@@ -1,4 +1,4 @@
-function logVoltagePressureTime(session, m, b, readInterval, runDuration, devices, baseFilename)
+function logVoltagePressureTime(session, m, b, readInterval, runDuration, devices, baseFilename, angleMeasurement, timestamp)
 
     arguments
         % Arguments w/o default
@@ -9,6 +9,8 @@ function logVoltagePressureTime(session, m, b, readInterval, runDuration, device
         runDuration double
         devices
         baseFilename string
+        angleMeasurement string
+        timestamp string
         %angleMeasurement string
 
     end
@@ -22,9 +24,21 @@ function logVoltagePressureTime(session, m, b, readInterval, runDuration, device
     startTime = tic; % Start timer
     disp(['Streaming and logging for ' num2str(runDuration) ' seconds...'])
     
-        for i=1:1:nChannels
-            fid(i) = fopen((baseFilename + "_Ch" + i + ".csv"),"a+");
-        end
+        % for i=1:1:nChannels
+        %     fid(i) = fopen((baseFilename + "_" + angleMeasurement + "_" + timestamp + ".csv"),"a+");
+        % end
+
+     fid = zeros(1,nChannels);
+
+for i = 1:nChannels
+    filename = sprintf('%s_%s_Ch%d_%s.csv', ...
+        baseFilename, angleMeasurement, i, timestamp);
+
+    fid(i) = fopen(filename,'a+');
+
+    % Optional header
+    fprintf(fid(i),"Time (s),Voltage (V),Pressure\n");
+end
   
     start(session,"continuous"); % Start acquisition
 
