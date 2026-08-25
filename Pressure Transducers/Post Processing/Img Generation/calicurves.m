@@ -118,6 +118,14 @@ dP_PITCH30_PN24Y0 = (mean(PITCH30_PN24Y0(:,3)))/non_dimensionalize_by_dynamic_pr
 PITCH30_alpha = [0, 15, 24, -15, -24];
 PITCH30_deltaP= [dP_PITCH30_P0Y0, dP_PITCH30_P15Y0, dP_PITCH30_P24Y0, dP_PITCH30_PN15Y0 , dP_PITCH30_PN24Y0];
 
+% Linear fit: deltaP = m*alpha + b
+p = polyfit(PITCH30_alpha, PITCH30_deltaP, 1);
+
+m = p(1);
+b = p(2);
+
+fprintf('deltaP = %.6f * alpha + %.6f\n', m, b);
+
 %% 75
 
 velcalc_at75 = readmatrix("Results/PressureLog_20260716_172425_Ch2_SPEED75.csv");
@@ -158,6 +166,13 @@ dP_PITCH75_PN24Y0 = (mean(PITCH75_PN24Y0(:,3)))/non_dimensionalize_by_dynamic_pr
 PITCH75_alpha = [0, 15, 24, -15, -24];
 PITCH75_deltaP= [dP_PITCH75_P0Y0, dP_PITCH75_P15Y0, dP_PITCH75_P24Y0, dP_PITCH75_PN15Y0 , dP_PITCH75_PN24Y0];
 
+% Linear fit: deltaP = m*alpha + b
+p = polyfit(PITCH75_alpha, PITCH75_deltaP, 1);
+
+m = p(1);
+b = p(2);
+
+fprintf('deltaP = %.6f * alpha + %.6f\n', m, b);
 %% 85
 
 velcalc_at85 = readmatrix(("Results/PressureLog_20260716_172901_Ch2_SPEED85.csv"));
@@ -198,6 +213,13 @@ dP_PITCH85_PN24Y0 = (mean(PITCH85_PN24Y0(:,3)))/non_dimensionalize_by_dynamic_pr
 PITCH85_alpha = [0, 15, 24, -15, -24];
 PITCH85_deltaP= [dP_PITCH85_P0Y0, dP_PITCH85_P15Y0, dP_PITCH85_P24Y0, dP_PITCH85_PN15Y0 , dP_PITCH85_PN24Y0];
 
+% Linear fit: deltaP = m*alpha + b
+p = polyfit(PITCH85_alpha, PITCH85_deltaP, 1);
+
+m = p(1);
+b = p(2);
+
+fprintf('deltaP = %.6f * alpha + %.6f\n', m, b);
 %% beta graph
 
 figure(1)
@@ -250,7 +272,7 @@ intercept = nd_p_alpha(2);
 eqnString = sprintf('y = %.2fx + %.2f', slope, intercept);
 xl = xlim;
 yl = ylim;
-text(0.1, 0.2, eqnString, 'FontSize', 12, 'Color', 'black', 'FontWeight', 'bold');
+text(0.1, 0.6, eqnString, 'FontSize', 12, 'Color', 'black', 'FontWeight', 'bold');
 
 %clamp data
 scatter(alpha_clamp, nd_deltaP_45_clamp, 'Marker', '+')
@@ -271,8 +293,7 @@ scatter(PITCH85_alpha,PITCH85_deltaP, 40, 'filled', 'MarkerFaceColor', 'c')
 
 xlabel('\alpha (deg)')
 ylabel('$\frac{\Delta P}{\frac{1}{2} \rho v^2}$', Interpreter='latex', rotation=0, FontSize=16)
-title('Yaw Direction (\beta) vs \Delta P')
+title('Yaw Direction (\alpha) vs \Delta P')
 legend('Aeroprobe Calibration Data', 'Aeroprobe Calibration Data Linear Fit', ...
     'Cone Angle Clamp to +/- 30^\circ', 'Cone Angle Clamp to +/- 30^\circ Linear Fit', '30% Variac', '75% Variac', '85% Variac', 'Location', 'northWest')
-
 

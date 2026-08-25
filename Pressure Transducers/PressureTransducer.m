@@ -18,9 +18,9 @@ b = [0.0003,0.0006]; % y-intercept of calibration curve %-0.0002
 readInterval = 1/1000;  % 0.1 seconds
 runDuration  = 60; % in seconds
 % 
-baseFilename = "A2_JULY29_PressureLog_SPEED85GOOD";
+baseFilename = "AUG21_VSIM_TUNNEL_VFD_ON_SPEED_900RPM_BACKSHROUD_POS_J_TRIAL2_SN10_P_SN11_Y";
 % G
-angleMeasurement ="SN10C1_PITCH_00_SN11C2_YAW_L30";
+angleMeasurement ="SN10C1_SN11C2";
 % 
 initializeCSVLogs(session, baseFilename)
 %initialzeCSVLogsRSV(session, "PressureDAQ_Log.csv")
